@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 ##############################################
-# 1. Generating the TF-IDF Matrix
+# 1. 生成 TF-IDF 矩阵
 ##############################################
 
 # uploading data
@@ -39,31 +39,31 @@ df_info(df)
 
 df["overview"].head()
 
-# we want to eliminate frequently used words in english such as the, and, on
+# 消除英语中常用的单词，如，和，on
 tfidf = TfidfVectorizer(stop_words="english")
 
-# Replacing missing information in the overview variable with " "
+# 用“”替换概述变量中缺少的信息
 df["overview"] = df["overview"].fillna(" ")
 
-# eliminating frequently used words in "overview" varibale
+# 消除“概述”变量中的常用词
 tfidf_matrix = tfidf.fit_transform(df["overview"])
 
 tfidf_matrix.shape
 # 45466 : overviews
 # 75827 : unique words
-# tf-idf scores exist at the intersection of these two
+# tf-idf分数存在于这两者的交叉点
 
-# specifying the types of values that make up the matrix as float32
+# 将构成矩阵的值类型指定为float32
 tfidf_matrix = tfidf_matrix.astype(np.float32)
 
-# while creating the cosine similarity matirx, I get ArrayMemoryError, limiting the matrix will solve this error
+# 在创建余弦相似矩阵时，得到ArrayMemoryError，限制矩阵将解决此错误
 tfidf_matrix = tfidf_matrix[:15000, :15000]
 
-# convert matrix to array
+# 将矩阵转换为数组
 tfidf_matrix.toarray()
 
 ##############################################
-# 2.Creating the Cosine Similarity MAtrix
+# 2.创建余弦相似矩阵
 ##############################################
 
 # 查找每部电影与其他电影的相似度值
